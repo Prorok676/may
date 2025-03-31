@@ -3,44 +3,54 @@
 #include <string>
 #include <vector>
 #include "Plant.hpp"
-#include "Bush.hpp"
-#include "Tree.hpp"
 #include "Fruit.hpp"
+#include "Player.hpp"
+#include "Backpack.hpp"
 
 int main ()
 {
     SetConsoleCP(1251);
     SetConsoleOutputCP(1251);
-    Bush bush("Клубницка", 1.0);
-    Tree tree("Яблонька", 5.0, 5, "Яблочко");
-    Tree tree2("Елочка", 10.0, 3, "Шишечка");
-
-    std::vector<std::unique_ptr<Plant>> plants;
-    plants.push_back(std::make_unique<Bush>(bush));
-    plants.push_back(std::make_unique<Tree>(tree));
-    plants.push_back(std::make_unique<Tree>(tree2));
+    Player player1("Харчок");
+    Player player2("Чушка");
 
 
-    for (const auto& plant : plants) {
-        std::cout << "Тип растения: " << plant->getType() << ", Название: " << plant->getName()
-            << ", Размер: " << plant->getSize() << ", Высота: " << plant->getHeight() << "\n\n";
+    Bush* bush = new Bush("Черничка", 1.5);
+    bush->setBerryCount(50); 
 
-        if (auto fruits = plant->gatherFruits()) 
-        {
-            std::cout << "Собранные плодики:" << std::endl;
-            for (const auto& fruit : *fruits) 
-            {
-                std::cout << fruit << std::endl;
-            }
-        }
-        else 
-        {
-            std::cout << "Плодики не собраны:(" << std::endl;
-        }
+    Tree* tree = new Tree("Яблонька", 10.0);
+    tree->setConiferous(true);
 
-        std::cout << std::endl;
-    }
 
+
+    Berry* berry = new Berry("Клубничка", 0.5);
+    CommonFruit* apple = new CommonFruit("Яблочко", 0.2); 
+    Cone* pineCone = new Cone("Шишечка еловая", 0.1);
+
+
+    player1.getBackpack().addFruit(berry);
+    player1.getBackpack().addFruit(apple);
+
+
+
+    player2.getBackpack().addFruit(pineCone);
+
+
+    std::cout << player1.getName() << " рюкзачок: " << std::endl;
+    player1.getBackpack().printContents();
+
+    std::cout << std::endl << player2.getName() << " рюкзачок: " << std::endl;
+    player2.getBackpack().printContents();
+    std::cout << std::endl;
+
+    delete bush;
+    delete tree;
+
+    delete berry;
+    delete apple;
+    delete pineCone;
+
+    std::cout << "Мяу мяу, мы сходили в лес:)" << std::endl;
 
     return 0;
 }

@@ -6,21 +6,46 @@
 
 class Plant 
 {
-
-
 public:
-    Plant(const std::string& name, double size, double height);
+    enum Size { SMALL, LARGE };
+
+    Plant(std::string name, Size size, double height);
     virtual ~Plant() = default;
 
     std::string getName() const;
-    double getSize() const;
+    Size getSize() const;
     double getHeight() const;
-    virtual std::string getType() const;
-    virtual std::unique_ptr<std::vector<std::string>> gatherFruits();
-private:
+    virtual std::string getType() const = 0; 
+
+protected:
     std::string name;
-    double size;
+    Size size;
     double height;
 };
 
+class Bush : public Plant 
+{
+public:
+    Bush(std::string name, double height);
+    std::string getType() const override;
+    int getBerryCount() const; 
+    void setBerryCount(int count);
+
+
+private:
+    int berryCount; 
+
+};
+
+class Tree : public Plant 
+{
+public:
+    Tree(std::string name, double height);
+    std::string getType() const override;
+    bool isConiferous() const; 
+    void setConiferous(bool coniferous);
+
+private:
+    bool coniferous; 
+};
 #endif // !_PLANT_HPP_
